@@ -1,64 +1,50 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from favorite.models import Favorite
 from favorite.serializers import FavoriteSerializer
 
 
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
-
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
-
-
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def favorite_list(request):
     """
     List all favorite, or create a new favorite.
     """
     if request.method == 'GET':
-        favorites = Favorite.objects.all()
-        serializer = FavoriteSerializer(favorites, many=True)
-        return JSONResponse(serializer.data)
+        favorite = Favorite.objects.all()
+        serializer = FavoriteSerializer(favorite, many=True)
+        return Response(serializer.data)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = FavoriteSerializer(data=data)
+        serializer = FavoriteSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def favorite_detail(request, pk):
     """
-    Retrieve, update or delete a code favorite.
+    Retrieve, update or delete a favorite instance.
     """
     try:
         favorite = Favorite.objects.get(pk=pk)
     except Favorite.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = FavoriteSerializer(favorite)
-        return JSONResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = FavoriteSerializer(favorite, data=data)
+        serializer = FavoriteSerializer(favorite, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         favorite.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
