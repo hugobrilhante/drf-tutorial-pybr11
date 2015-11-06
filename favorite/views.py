@@ -7,7 +7,7 @@ from favorite.serializers import FavoriteSerializer
 
 
 @api_view(['GET', 'POST'])
-def favorite_list(request):
+def favorite_list(request, format=None):
     """
     List all favorite, or create a new favorite.
     """
@@ -25,7 +25,7 @@ def favorite_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def favorite_detail(request, pk):
+def favorite_detail(request, pk, format=None):
     """
     Retrieve, update or delete a favorite instance.
     """
