@@ -13,8 +13,8 @@ class FavoriteSerializer(serializers.ModelSerializer):
         fields = ('pk', 'content', 'description', 'create', 'owner')
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    favorites = serializers.HyperlinkedRelatedField(many=True, view_name='favorite-detail', read_only=True)
+class UserSerializer(serializers.ModelSerializer):
+    favorites = serializers.PrimaryKeyRelatedField(many=True, queryset=Favorite.objects.all())
 
     class Meta:
         model = User
