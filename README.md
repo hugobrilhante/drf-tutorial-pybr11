@@ -1,6 +1,4 @@
-# Tutorial Criando apis com o Django REST framework 3 Python Brasil
-
-
+# Tutorial Create apis Django REST Framework 3 Python Brazil 11
 
 ## Setting up a new environment
 
@@ -11,6 +9,10 @@
 `pip install django`
 
 `pip install djangorestframework`
+
+`pip install django-filter`
+
+`pip install drf-nested-routers`
 
 ## Step-0 Project initial
 
@@ -113,5 +115,26 @@ Add in _INSTALED_APPS_ :
 10. Allow overriding HTTP method
 
 
-[10 Best Practices for Better RESTful API](https://www.google.com)
+[10 Best Practices for Better RESTful  API](https://www.google.com)
 
+## Two links I found super useful:
+
+[Apigee](https://apigee.com/providers)
+
+[Progammableweb](http://www.programmableweb.com)
+
+The first is the main API providers: Facebook, Instagran, Twitter, Google ...
+
+Facebook example:
+
+Clicking on facebook provider, takes you to a kind of simple documentation, which is listed all the features of the Facebook API.
+
+[Resources Facebook](https://apigee.com/resources/facebook)
+
+Click any of the resources takes you to a console where you can do testing.
+
+[Console Facebook](https://apigee.com/console/facebook)
+
+In this console there is a dropdown where it listed all the APIs provided in this site.
+
+The second is a kind of journal of APIs.
